@@ -1,0 +1,26 @@
+######## .gitattributes Introduce
+# 配置格式: pattern   attr1 -attr2 attr3=str 
+# 如果 path 没有被 pattern 匹配到, 那么表示 unspecified 未指定
+# pattern 匹配模式跟 .gitignore 一样
+
+*.txt           text=lf eol=lf working-tree-encoding=UTF-8
+
+######## 自定义 git merge 驱动程序
+# buildin merge driver: text, binary, union
+# shell> git config --global merge.need-verify-merge-driver.name 'desc'       # 当前 merge driver 的描述
+# 定义自定义驱动程序的命令, 注意这里的 true 是 linux shell 的命令, exit code 永远等于 0
+# shell> git config --global merge.need-verify-merge-driver.driver './need-verify-merge-driver.sh %A %O %B'       
+# shell> git config --global merge.need-verify-merge-driver.recursive text    # 定义递归祖先合并的策略
+
+######## 后端配置文件使用 need-verify-merge-driver 驱动进行 git merge
+# maven-assembly-plugin 配置文件
+**/src/assembly/*                   merge=need-verify-merge-driver
+# maven profile filter 配置文件
+**/src/*/filter/*                   merge=need-verify-merge-driver
+# 项目配置文件
+**/src/*/resources/**/*.yml         merge=need-verify-merge-driver
+**/src/*/resources/**/*.properties  merge=need-verify-merge-driver
+
+
+######## 前端配置文件使用 need-verify-merge-driver 驱动进行 git merge
+**/*-client/src/config/**/*         merge=need-verify-merge-driver

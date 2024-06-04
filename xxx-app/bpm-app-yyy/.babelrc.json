@@ -1,0 +1,6 @@
+/** .babelrc.json 支持 JSON5
+ * .babelrc.json 只对项目中的一部分生效
+ * */
+{
+
+}

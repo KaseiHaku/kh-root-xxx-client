@@ -1,0 +1,57 @@
+/** babel.config.json 支持 JSON5
+ * 对整个项目生效，可以对 node_modules 里面的内容进行编译
+ * */
+{
+  "targets": {
+    "esmodules": true
+  },
+  /** plugin: 一个 plugin 实现一个编译功能
+   * 如果 plugin 在 npm 库中，那么直接写 plugin 名字即可，babel 会自动安装 module 到 node_modules 中
+   * 如果 plugin 的名字以 babel-plugin- 带头，那么可以省略不写，但是不能省略 npm 的 scope， 即： @scope/ 后面的可以省略
+   * Plugin 执行顺序：
+   *  plugins 中的比 presets 中的先执行
+   *  在 plugins 中的，按从前到后执行
+   *  presets 中的顺序是 按从后到前执行的
+   * */
+  "plugins": [
+    /* Transform Plugins: 用于将高版本的 js 转换成低版本的代码 */
+
+
+    /* Syntax Plugins: 仅仅用于增加 babel 能解析的语法 */
+    [
+      // plugin 名称
+      "@babel/plugin-transform-runtime",
+      // plugin options
+      {
+        useESModules: true
+      }
+    ],
+    // 转换箭头函数，spec 表示箭头函数中的 this 通过 .bind(this) 的方式进行绑定，可以方便调试
+    ["@babel/plugin-transform-arrow-functions", { "spec": true }],
+  ],
+  /** preset: 预配置：其实是一组 plugin，用于实现特定编译需求
+   * 如果 preset 在 npm 库中，那么直接写 preset 名字即可，babel 会自动安装 module 到 node_modules 中
+   * 如果 preset 的名字以 babel-preset- 带头，那么可以省略不写，但是不能省略 npm 的 scope， 即： @scope/ 后面的可以省略
+   * Preset 执行顺序： 从数组尾到头的顺序执行
+   *
+   * */
+  "presets": [
+    [
+      // preset 名称
+      "@babel/preset-env",
+      // preset options
+      {
+
+      }
+    ],
+
+    [
+      "@vue/cli-plugin-babel/preset",
+      {
+
+      }
+    ]
+
+  ]
+
+}
