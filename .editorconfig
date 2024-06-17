@@ -1,3 +1,6 @@
+# @ref {官网} https://editorconfig.org/
+# @ref {所有支持的 props} https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties
+
 # 说明
 # 通配符：
 #   *               匹配除 / 外所有字符
@@ -44,14 +47,14 @@ ij_any_line_comment_at_first_column = false
 
 
 
-[*.{java, groovy, go}]
+[*.{java,groovy,go}]
 max_line_length = 128
 
 # java doc 不参与格式化
 ij_java_doc_enable_formatting = false
 
 
-[*.{js, mjs, cjs, yml, yaml, json, json5, html, vue, hcl, xml, css, scss}]
+[*.{js,mjs,cjs,yml,yaml,json,json5,html,vue,hcl,xml,css,scss}]
 indent_size = 2
 tab_width = 2
 

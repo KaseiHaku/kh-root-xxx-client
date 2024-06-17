@@ -15,7 +15,7 @@
 # Ctrl+L              # 清屏
 
 ################################ 前端项目运行 ################################
-shell> nvm use 18.16.0                          # 使用指定版本的 node
+shell> nvm use 20.14.0                          # 使用指定版本的 node
 
 shell> npm install json5@2.2.3                  # 安装 JSON5 解析库，需要先删掉顶层 package.json, 否则会额外下载 package.json 中的依赖
 shell> node ./package.json5.mjs                 # 解析 package.json5 文件中的内容，并写入到 package.json 中
@@ -25,6 +25,7 @@ shell> npm install                              # 安装依赖
 
 shell> npm run core-com-build                   # 先构建公共包
 shell> npm install                              # 再次 install 将 公共包(core-com) 安装到 node_modules 目录下
+shell> npm run cloud-starter-basic-build        # 构建 cloud 公共包
 shell> npm run cloud-user-build                 # 再构建业务包
 shell> npm run cloud-user-start                 # 本地部署前端项目
 
