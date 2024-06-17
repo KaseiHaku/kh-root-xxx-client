@@ -3,7 +3,7 @@
  *       各个子模块还需要 重复编写 自己的依赖，即: 需要在各个子模块中的 package.json5 中，写明当前子模块的依赖信息
  * */
 {
-    "name": "@kaseihaku.com/xxx-root",
+    "name": "@kaseihaku.com/kh-root-xxx",
     "version": "1.0.0", // semver 规定格式的版本号
     "description": "kaseihaku.com kh-root Client", // 当前包的描述， 用于 shell> npm search
     "keywords": ["@kasei", "@kaseihaku.com"], // 关键字， 用于 shell> npm search

@@ -3,6 +3,11 @@
 /.idea/
 /**/*.iml
 
+# 排除掉 telepresence intercept 开发用的环境变量文件
+deploy/dev/.env
+deploy/dev/pvt/
+
+
 ################################ Client ################################
 # 排除掉 package.json, 当前项目使用 package.json5 替代，
 # 但是 package-lock.json 不能排除，会导致不同人下载下来的依赖版本不一样，
