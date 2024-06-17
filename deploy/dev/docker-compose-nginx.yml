@@ -37,10 +37,10 @@ services:
       - ${BASE_PATH:-.}/nginx/apps/app2:/usr/share/nginx/apps/app2:ro
       # Cloud 开发环境
       - ../docker/nginx/apps/cloud/index.html:/usr/share/nginx/apps/cloud/index.html:ro
-      - /home/kasei/Desktop/GitLocalRepository/kh-root-client/cloud/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
+      - ../../node_modules/@kaseihaku.com/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
       # BPM 开发环境
       - ../docker-sit/nginx/apps/bpm/index.html:/usr/share/nginx/apps/bpm/index.html:ro
-      - /home/kasei/Desktop/GitLocalRepository/kh-root-client/bpm/bpm-ppe/dist:/usr/share/nginx/apps/bpm/bpm-ppe:ro
+      - ../../node_modules/@kaseihaku.com/bpm-ppe/dist:/usr/share/nginx/apps/bpm/bpm-ppe:ro
       - ../../bpm/bpm-ppe-lib/dist:/usr/share/nginx/apps/bpm/bpm-ppe-lib:ro
       - ../../bpm/bpm-portal/dist:/usr/share/nginx/apps/bpm/bpm-portal:ro
       - ../../bpm/bpm-app-one/dist:/usr/share/nginx/apps/bpm/bpm-app-one:ro

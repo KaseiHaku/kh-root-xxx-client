@@ -10,7 +10,6 @@ import {useRoute, useRouter} from 'vue-router';
 import {useKhGlobalOptions} from '@kaseihaku.com/cloud-starter-basic';
 import ServerUrl from '@/config/axios/ServerUrl.js';
 import Constant from '@/constant/BpmAppConstant.js';
-import {loadModule} from 'vue3-sfc-loader';
 import _ from 'lodash-es';
 import {i18n} from '@/config/vue/i18n/VueI18nConfig.js';
 

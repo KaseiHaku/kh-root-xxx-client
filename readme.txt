@@ -18,6 +18,23 @@
 由于该库没有任何需要和 kh-root-client 库保持同步的代码，所以可以根据不同的甲方独立建立 git 库，并修改 xxx 为对应甲方名称
 当然也可以根据不同甲方创建不同的 git branch，例如: aaa-prod, aaa-sit, bbb-prod 等
 
+################################ 环境配置 ################################
+shell> npm config set registry = https://registry.npmmirror.com            # 设置 淘宝 npm 镜像源
+
+
+# 设置私有库密码
+# @trap npm login 对于 Nexus 私有库无效
+shell> npm login --registry=http://192.168.0.200:8081/repository/npm-hosted/    # login 对于 Nexus 私有库无效
+shell> npm config set //192.168.0.200:8081/repository/npm-hosted/:_auth $(echo -n 'admin:cfac158b' | base64)    # 有效
+
+
+# scope(即: @xxx/) 和 registry 是 n:1 的关系
+# @trap 如果登录不上 shell> vim ~/.npmrc 中删掉对应行
+shell> npm login --registry=http://192.168.0.200:8081/repository/npm-hosted/ --scope=@kaseihaku.com       # 将 @kaseihaku.com/* 开头的包的 registry 设置为指定 URL
+shell> npm config set @kh:registry=http://reg.example.com                       # 将 @kh/* 开头的包的 registry 设置为指定 URL
+
+shell> npm publish --dry-run ./core/core-com
+
 
 ################################ 前端项目运行 ################################
 shell> nvm use 20.14.0                          # 使用指定版本的 node
