@@ -36,7 +36,7 @@ services:
       - ${BASE_PATH:-.}/nginx/apps/app2:/usr/share/nginx/apps/app2:ro
       # Cloud 开发环境
       - ./nginx/apps/cloud/index.html:/usr/share/nginx/apps/cloud/index.html:ro
-      - /home/kasei/Desktop/GitLocalRepository/kh-root-client/cloud/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
+      - ./nginx/apps/cloud/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
       # BPM 开发环境
       - ./nginx/apps/bpm/index.html:/usr/share/nginx/apps/bpm/index.html:ro
       - ./nginx/apps/bpm/bpm-ppe:/usr/share/nginx/apps/bpm/bpm-ppe:ro

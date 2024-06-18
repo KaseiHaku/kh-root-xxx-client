@@ -28,16 +28,16 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro        # 用于保证容器时区正确
       - /etc/localtime:/etc/localtime:ro      # 用于保证容器时区正确
-      - ../docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro   # 覆盖 nginx 默认配置
-      - ../docker/nginx/mime.types:/etc/nginx/mime.types:ro   # 覆盖 nginx 默认配置
-      - ../docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ../docker/nginx/tls:/etc/nginx/tls:ro
+      - ../docker-sit/nginx/nginx.conf:/etc/nginx/nginx.conf:ro   # 覆盖 nginx 默认配置
+      - ../docker-sit/nginx/mime.types:/etc/nginx/mime.types:ro   # 覆盖 nginx 默认配置
+      - ../docker-sit/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../docker-sit/nginx/tls:/etc/nginx/tls:ro
       # 普通前端项目
       - ${BASE_PATH:-.}/nginx/apps/app1:/usr/share/nginx/apps/app1:ro
       - ${BASE_PATH:-.}/nginx/apps/app2:/usr/share/nginx/apps/app2:ro
       # Cloud 开发环境
-      - ../docker/nginx/apps/cloud/index.html:/usr/share/nginx/apps/cloud/index.html:ro
-      - ../../node_modules/@kaseihaku.com/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
+      - ../docker-sit/nginx/apps/cloud/index.html:/usr/share/nginx/apps/cloud/index.html:ro
+      #- ../../node_modules/@kaseihaku.com/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
       # BPM 开发环境
       - ../docker-sit/nginx/apps/bpm/index.html:/usr/share/nginx/apps/bpm/index.html:ro
       - ../../node_modules/@kaseihaku.com/bpm-ppe/dist:/usr/share/nginx/apps/bpm/bpm-ppe:ro

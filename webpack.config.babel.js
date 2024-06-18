@@ -886,7 +886,7 @@ export default {
           // '--incognito',    // 该模式会导致 localstorage 无法设置和访问，导致网页无法正常登录，所以注释掉
           '--new-window',
           // 设置成 idea debug 用的 chrome user data，用以创建 独立的 chrome 实例，防止干扰系统默认的 chrome 配置
-          '--user-data-dir=/home/kasei/.config/JetBrains/IntelliJIdea2022.3/chrome-user-data',
+          '--user-data-dir=/home/kasei/.config/JetBrains/IntelliJIdea2024.1/chrome-user-data',
         ],
       },
     },
@@ -966,6 +966,7 @@ export default {
     static: [
       {
         directory: path.resolve(__dirnameEsModule, getEntryPath(), './dist'),
+        // @doc {可用配置} https://expressjs.com/en/4x/api.html#express.static
         staticOptions: {  // 在 devServer.contentBase 值为 string 的时候该配置才有效
           redirect: false,
         },
@@ -973,6 +974,12 @@ export default {
         serveIndex: { icons: true }, // 在访问没有 index.html 文件的目录时，返回目录清单
         watch: true,  // 监控变化
       },
+      {
+        directory: path.resolve(__dirnameEsModule, './node_modules/@kaseihaku.com/bpm-ppe/dist'),
+        publicPath: '/bpm-ppe',
+        serveIndex: { icons: true },
+        watch: false,
+      }
     ],
 
 

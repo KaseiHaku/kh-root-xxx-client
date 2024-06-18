@@ -37,7 +37,7 @@ process.env.BROWSER_ARGS = [
   // '--incognito',    // 该模式会导致 localstorage 无法设置和访问，导致网页无法正常登录，所以注释掉
   '--new-window',
   // 设置成 idea debug 用的 chrome user data，用以创建 独立的 chrome 实例，防止干扰系统默认的 chrome 配置
-  '--user-data-dir=/home/kasei/.config/JetBrains/IntelliJIdea2022.3/chrome-user-data',
+  '--user-data-dir=/home/kasei/.config/JetBrains/IntelliJIdea2024.1/chrome-user-data',
 ].join(' ');
 const serverOptions = {
   host: '0.0.0.0',

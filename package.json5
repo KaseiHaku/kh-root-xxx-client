@@ -56,10 +56,15 @@
     // 自研库
     "@kaseihaku.com/core-com": "1.0.0",
     "@kaseihaku.com/cloud-starter-basic": "1.0.0",
-    "@kaseihaku.com/bpm-starter-basic": "1.0.0"
+    "@kaseihaku.com/bpm-starter-basic": "1.0.0",
+
   },
   /* 开发依赖： 开发过程中所需要用到的工具等 */
   "devDependencies": {
+    // 引入已经编译好的项目，用于部署
+    "@kaseihaku.com/bpm-ppe": "1.0.0",
+
+
     /** CSS 预处理器: 就是 dart-sass 用于替换 node-sass */
     "sass": "1.72.0",
     /** eslint */
