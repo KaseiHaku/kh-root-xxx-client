@@ -24,6 +24,8 @@ shell> npm config set @kaseihaku.com:registry=https://repo.kaseihaku.com/service
 
 ################################ 前端项目运行 ################################
 # act/pwd: root/1234
+# 后端框架默认 JwsUniqueType=clientType ，
+#   即：一种 client 类型(例如: 浏览器，手机端，小程序等)下一个 user 只能存在一个有效的 JWT token, 多人登陆同一账号会导致相互踢人
 #
 shell> nvm use 20.14.0                          # 使用指定版本的 node
 
