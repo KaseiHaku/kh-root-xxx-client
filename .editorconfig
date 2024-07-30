@@ -1,0 +1,61 @@
+# @ref {官网} https://editorconfig.org/
+# @ref {所有支持的 props} https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties
+
+# 说明
+# 通配符：
+#   *               匹配除 / 外所有字符
+#   **              匹配所有字符，包括 /
+#   ?               匹配单个字符
+#   [name]          匹配 name 字符串
+#   [!name]         匹配 非 name 字符串
+#   [num1..num2]    匹配 num1 到 num2 之间的所有数字
+#   {s1,s2,s3}      匹配 s1 s2 s3 任意一个字符串
+
+# top-most EditorConfig file
+root = true
+
+# all files
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+tab_width = 4
+end_of_line = lf
+max_line_length = 256
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# 续行 换行时，缩进 4 个 space
+ij_continuation_indent_size = 4
+ij_any_keep_indents_on_empty_lines = true
+# 在指定列显示标线
+ij_visual_guides = 80, 120
+# 输入行超长自动换行
+ij_wrap_on_typing = true
+# any language(java, js, go) 超长行自动换行
+ij_any_wrap_long_lines = true
+# any language(java, js, go) 注释也换行
+ij_any_wrap_comments = true
+# any language(java, js, go) 方法调用链中，地一个方法调用换行
+ij_any_wrap_first_method_in_call_chain = true
+# any language(java, js, go) 单行注解前面添加空格
+ij_any_line_comment_add_space = true
+ij_any_keep_first_column_comment = false
+# false: 注释符 根据代码位置确定，而不是默认首行
+ij_any_block_comment_at_first_column = false
+ij_any_line_comment_at_first_column = false
+
+
+
+[*.{java,groovy,go}]
+max_line_length = 128
+
+# java doc 不参与格式化
+ij_java_doc_enable_formatting = false
+
+
+[*.{js,mjs,cjs,yml,yaml,json,json5,html,vue,hcl,xml,css,scss}]
+indent_size = 2
+tab_width = 2
+
+ij_continuation_indent_size = 2

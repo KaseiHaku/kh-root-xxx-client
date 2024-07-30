@@ -1,0 +1,21 @@
+################################ Universal ################################
+# IDEA 无用运行临时目录
+/.idea/
+/**/*.iml
+
+# 排除掉 telepresence intercept 开发用的环境变量文件
+deploy/dev/.env
+deploy/dev/pvt/
+
+
+################################ Client ################################
+# 排除掉 package.json, 当前项目使用 package.json5 替代，
+# 但是 package-lock.json 不能排除，会导致不同人下载下来的依赖版本不一样，
+# 由于当前项目都是精确版本号，所以这里可以排除 package-lock.json
+/**/package.json
+/**/package-lock.json
+
+# Node.js Webpack 的输出目录
+/**/node_modules/
+/**/dist*/
+

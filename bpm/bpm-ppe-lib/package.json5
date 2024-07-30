@@ -1,0 +1,18 @@
+{
+  "name": "@xxx.com/bpm-ppe-lib",
+  "type": "module",
+//  "dependencies": {
+//
+//    "lodash-es": "4.17.21", // js 工具包，比 underscore 好，跟 lodash 包的区别是：该包导出的是 es module，而 lodash 是 node.js module
+//    "uuid": "9.0.1",
+//
+//    "vue": "3.4.21",
+//
+//    "element-plus": "2.7.7", // 新版的 element-ui
+//
+//    // 自研库
+//    "@kaseihaku.com/core-infra": "1.0.0",
+//    "@kaseihaku.com/cloud-starter-basic": "1.0.0",
+//    "@kaseihaku.com/bpm-starter-basic": "1.0.0",
+//  }
+}

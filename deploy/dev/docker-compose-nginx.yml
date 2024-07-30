@@ -1,0 +1,46 @@
+version: "3.8"
+
+# 扩展字段 YAML Anchor: key 必须是 "x-" 开头
+x-logging: &x-logging
+  driver: json-file
+  options:
+    max-size: "256m"     # -1 (unlimited), k, m, g; default = -1
+    max-file: "2"       # 必须是字符串，即: 引号包含
+
+# 扩展字段：各镜像版本
+x-nginx-img: &x-nginx-img nginx:1.25.3
+
+x-extra-hosts: &x-extra-hosts
+  # 因为 dev 环境，app 和 redis 在同一个 docker 网络下，可以直接通过 container name 访问，所以无需通过 host 配置 dns 解析
+  - 'example.kaseihaku.com:127.0.0.1'
+
+services:
+  nginx:
+    image: *x-nginx-img
+    ports: [
+      80:80, 443:443,
+      #8080:8080, 8443:8443     # localhost dev env
+    ]
+    volumes:
+      - /etc/timezone:/etc/timezone:ro        # 用于保证容器时区正确
+      - /etc/localtime:/etc/localtime:ro      # 用于保证容器时区正确
+      - ../sit/nginx/nginx.conf:/etc/nginx/nginx.conf:ro   # 覆盖 nginx 默认配置
+      - ../sit/nginx/mime.types:/etc/nginx/mime.types:ro   # 覆盖 nginx 默认配置
+      - ../sit/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../sit/nginx/tls:/etc/nginx/tls:ro
+      # 普通前端项目
+      - ${BASE_PATH:-.}/nginx/apps/app1:/usr/share/nginx/apps/app1:ro
+      - ${BASE_PATH:-.}/nginx/apps/app2:/usr/share/nginx/apps/app2:ro
+      # Cloud 开发环境
+      #- ../../node_modules/@kaseihaku.com/cloud-user/dist:/usr/share/nginx/apps/cloud/cloud-user:ro
+      # BPM 开发环境
+      - ../sit/nginx/apps/bpm/index.html:/usr/share/nginx/apps/bpm/index.html:ro
+      - ../../node_modules/@kaseihaku.com/bpm-ppe/dist:/usr/share/nginx/apps/bpm/bpm-ppe:ro
+      - ../../bpm/bpm-ppe-lib/dist:/usr/share/nginx/apps/bpm/bpm-ppe-lib:ro
+      - ../../bpm/bpm-portal/dist:/usr/share/nginx/apps/bpm/bpm-portal:ro
+      - ../../bpm/bpm-app-one/dist:/usr/share/nginx/apps/bpm/bpm-app-one:ro
+    environment:
+      TZ: "Asia/Shanghai"      # 用于保证容器时区正确
+    # 依赖这些服务，但是因为不在同一个 compose.yml 文件中，导致无法引用，所以注释掉了
+    #depends_on: [ cloud-oauth-server, cloud-oidc-rp, cloud-gateway ]
+    extra_hosts: *x-extra-hosts

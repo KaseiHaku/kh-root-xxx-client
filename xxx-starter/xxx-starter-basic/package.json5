@@ -1,0 +1,28 @@
+{
+  /******************************* Node.js 定义的字段 *******************************/
+  "name": "@xxx.com/xxx-starter-basic",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./assets/*": "./dist/assets/*",              // 导出当前 package 所在目录 ./dist/assets 下的所有内容
+  },
+
+  /******************************* NPM(Node Package Manager) 定义的字段 *******************************/
+  "private": true,
+  "files": [
+    "./dist/",
+    "!./dist/src",
+  ],
+
+  "browser": {
+    "fs": false,
+  },
+
+  "sideEffects": [
+    "**/*.css",  // .css 文件肯定要包含，因为必定对 global 环境有影响，即: 副作用
+  ]
+}
