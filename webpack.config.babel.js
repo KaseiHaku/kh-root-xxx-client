@@ -939,7 +939,7 @@ export default {
         // protocolRewrite: 'https', // 重定向时，将 protocol 重写为 "http" 或 "https"，默认为 null
         // 添加额外的请求头，再发送给目标服务器
         headers: {
-          'x-kasei-gray-req-flag': 'Canary=bpm-app-one,bpm-app-xxx',    // browser 灰度请求定义 header
+          // 'x-kasei-gray-req-flag': 'Canary=bpm-app-one,bpm-app-xxx',    // browser 灰度请求定义 header
         },
         followRedirects: false,  // false: agent 自动跟踪 redirect 响应
       },

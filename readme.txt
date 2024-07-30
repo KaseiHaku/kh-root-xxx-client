@@ -43,6 +43,8 @@ shell> cp ./deploy/dev/.env.sample ./deploy/dev/.env                        # �
 shell> docker compose -f ./deploy/dev/docker-compose-nginx.yml up -d        # 启动 nginx 部署 bpm-ppe-lib
 shell> npm run bpm-portal-start                                             # 开始开发
 shell> npm run bpm-app-one-start                                            # 必须访问: http://localhost:8080/index.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
+                                                                            # 其中 http://localhost:8080/index.html?bpmAppName=bpm-app-one#/proc/feature/v1/DefaultReport.vue
+                                                                            # 会访问 http://localhost:8080/api/bpm-app-one/v1/Feature 接口，可以用于对 bpm-app-one 进行本地灰度测试
 shell> npm run bpm-ppe-start                                                # 必须访问: http://localhost:8080/admin.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
 
 ################################ 常用命令 ################################
