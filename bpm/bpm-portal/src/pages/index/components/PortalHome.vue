@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%; margin: 3%;">
     <el-input v-model.trim="searchStr" clearable size="large"
               placeholder="Please input" autofocus @keyup.enter="handleSearch" >
       <template #prefix>
@@ -7,20 +7,21 @@
       </template>
     </el-input>
     <el-divider/>
-    <el-space  :wrap="true">
-      <el-card v-for="(value, key, index) in bpmApps" :key="value.service" :header="`${value.appName}(${value.service})`"
+    <el-space :wrap="true" >
+      <el-card v-for="(value, key, index) in bpmApps" :key="value.service"
                shadow="always" @click="cardClickHandler(`/${value.service}?bpmAppName=${value.service}`)">
-        <el-space direction="vertical">
-          <p>
-            <el-link type="primary" @click.prevent.stop="cardClickHandler(`/bpm-ppe/admin.html?bpmAppName=${value.service}`)" >
-              <el-space><el-icon><Search /></el-icon> admin</el-space>
-            </el-link>
-          </p>
-          <p>
-            <el-link type="primary" @click.prevent.stop="cardClickHandler(`/${value.service}/index.html?bpmAppName=${value.service}`)">
-              home
-            </el-link>
-          </p>
+
+        <template #header>
+          <el-icon><Grid /></el-icon> {{value.appName}}（{{value.service}}）
+        </template>
+
+        <el-space direction="vertical" alignment="start" :size="0">
+          <el-link type="primary" @click.prevent.stop="cardClickHandler(`/bpm-ppe/admin.html?bpmAppName=${value.service}`)" >
+            <el-space><el-icon><Tools /></el-icon> Administrate</el-space>
+          </el-link><br/>
+          <el-link type="primary" @click.prevent.stop="cardClickHandler(`/${value.service}/index.html?bpmAppName=${value.service}`)">
+            <el-space><el-icon><HomeFilled /></el-icon> Home</el-space>
+          </el-link>
         </el-space>
       </el-card>
     </el-space>

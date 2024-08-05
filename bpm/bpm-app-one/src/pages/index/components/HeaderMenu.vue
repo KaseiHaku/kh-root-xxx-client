@@ -85,7 +85,6 @@ onBeforeMount(() => {
 <style lang="scss" scoped>
   .el-menu {
     height: 100%;
-    background-color: var(--el-color-primary-light-7);
   }
 
   img {
