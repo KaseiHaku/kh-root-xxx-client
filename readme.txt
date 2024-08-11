@@ -45,7 +45,6 @@ shell> npm run bpm-portal-start                                             # �
 shell> npm run bpm-app-one-start                                            # 必须访问: http://localhost:8080/index.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
                                                                             # 其中 http://localhost:8080/index.html?bpmAppName=bpm-app-one#/proc/feature/v1/DefaultReport.vue
                                                                             # 会访问 http://localhost:8080/api/bpm-app-one/v1/Feature 接口，可以用于对 bpm-app-one 进行本地灰度测试
-shell> npm run bpm-ppe-start                                                # 必须访问: http://localhost:8080/admin.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
 
 ################################ 常用命令 ################################
 shell> NODE_ENV=production node --inspect-brk ./demo/jsTest.mjs                   # node js 测试
@@ -63,3 +62,6 @@ shell> nvm use                                  # 使用 ~/.nvmrc 中指定的 n
 shell> nvm use 18.16.0                          # 使用指定版本的 node
 
 
+# npm 缓存清理
+shell> npm config get cache                     # 查看缓存位置
+shell> npm cache clean --force                  # 清理全部缓存
