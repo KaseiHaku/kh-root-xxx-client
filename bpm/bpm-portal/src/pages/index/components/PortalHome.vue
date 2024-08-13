@@ -9,7 +9,7 @@
     <el-divider/>
     <el-space :wrap="true" >
       <el-card v-for="(value, key, index) in bpmApps" :key="value.service"
-               shadow="always" @click="cardClickHandler(`/${value.service}?bpmAppName=${value.service}`)">
+               shadow="always" @click="cardClickHandler(`/${value.service}/index.html?bpmAppName=${value.service}`)">
 
         <template #header>
           <el-icon><Grid /></el-icon> {{value.appName}}（{{value.service}}）
