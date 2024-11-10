@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BPM Portal</title>
+  <link rel="icon" type="image/svg+xml" href="./public/favicon.png" />
+  <style>
+    * {
+      margin: 0; /* 设置 margin 为 0 方便 body 占满整个屏幕 */
+      padding: 0; /* 设置 padding 为 0 方便 body 占满整个屏幕 */
+      box-sizing: border-box; /* 表示计算元素宽高的时候包含 padding 和 border 的宽度 */
+    }
+    /* 设置 html body #app 的高度刚好为屏幕高度 */
+    html, body, #app {
+      width: 100%;
+      height: 100%;
+    }
+    /*
+    #app {
+      display: flex; !* 当前 div 作为 flex 容器 *!
+      flex-flow: column nowrap; !* 方向 从上到下，溢出不换行 *!
+      justify-content: flex-start; !* 主轴方向：从头开始显示; *!
+      align-items: stretch; !* 交叉轴方向：扩展显示 *!
+    }
+    */
+  </style>
+  <script type="module" src="./src/pages/index/index.js" ></script>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+</html>

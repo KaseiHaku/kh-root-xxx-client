@@ -49,7 +49,7 @@
 
 import {ref, reactive, onBeforeMount} from 'vue';
 import {ElMessage} from 'element-plus';
-import {timestamp2LocalDateTimeString, argon2HashPromise} from '@kaseihaku.com/core-infra';
+import {timestamp2LocalDateTimeString, nativeCryptoSubtle} from '@kaseihaku.com/core-infra';
 import {CloudServerApi, useCurUserStore} from '@kaseihaku.com/cloud-starter-basic';
 /******************************* Var & Function *******************************/
 const curUserStore = useCurUserStore();
@@ -97,14 +97,14 @@ const dialogFormData = reactive({
 });
 /* 清空数据 */
 function clearForm(){
+  // 需要特殊处理的字段名
+  let specialTreatmentFields = [
+    // 无需处理的字段
+    'id',
+    // 需要特殊清空的字段
+    'certificateConfirm',
+  ];
   Reflect.ownKeys(dialogFormData).forEach(item => {
-    // 需要特殊处理的字段名
-    let specialTreatmentFields = [
-      // 无需处理的字段
-      'id',
-      // 需要特殊清空的字段
-      'certificateConfirm',
-    ];
     if(specialTreatmentFields.includes(item)){
       return ;
     }
@@ -115,7 +115,7 @@ function clearForm(){
   dialogFormData.certificateConfirm = '';
 }
 const dialogEditConfirmed = async () => {
-  if (!(typeof dialogFormData.id || dialogFormData.id instanceof String)) {
+  if (!(typeof dialogFormData.id==='string' || dialogFormData.id instanceof String)) {
     throw new Error('身份认证 id 数据类型错误');
   }
 
@@ -130,7 +130,7 @@ const dialogEditConfirmed = async () => {
   // 参数调整
   let params = Object.assign({}, dialogFormData);
   if(dialogFormData.identifierType === 'account'){
-    params.certificate = (await argon2HashPromise)(dialogFormData.identifier, dialogFormData.certificate);
+    params.certificate = await nativeCryptoSubtle(dialogFormData.identifier, dialogFormData.certificate);
   }
 
 

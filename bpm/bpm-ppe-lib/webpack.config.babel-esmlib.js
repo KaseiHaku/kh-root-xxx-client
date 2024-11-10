@@ -155,7 +155,8 @@ export default {
       fileName: 'manifest.json',
     }),
   ],
-  devtool: process.env.APP_PROFILE && process.env.APP_PROFILE!=='prod' ? 'source-map' : false, // prod 环境不生成 source-map, 其他环境都生成，方便 debug
+  // devtool: process.env.APP_PROFILE && process.env.APP_PROFILE!=='prod' ? 'source-map' : false, // prod 环境不生成 source-map, 其他环境都生成，方便 debug
+  devtool: false,
   target: ['es2021'], // 这里不能有 'web'
   externals: [],
   stats: {

@@ -12,13 +12,13 @@ export default class BpmPpeProfile  {
     asLogoutUrl: 'https://as.kaseihaku.com/cust-logout',
   };
   static sit = {
-    baseUrl: 'https://bpm.kaseihaku.com/api',
+    baseUrl: 'https://ddns-bpm.kaseihaku.com:50443/api',
     signOutPath: '/cloud-user/v1/Authenticate/signOut',
     asLogoutUrl: 'https://as.kaseihaku.com/cust-logout',
   };
 
   static prod = {
-    baseUrl: 'http://localhost:8412',
+    baseUrl: 'https://bpm.kaseihaku.com/api',
     signOutPath: '/cloud-user/v1/Authenticate/signOut',
     asLogoutUrl: 'https://as.kaseihaku.com/cust-logout',
   };

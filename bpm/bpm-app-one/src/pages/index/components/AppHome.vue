@@ -45,7 +45,7 @@ import MainBody from '@/pages/index/components/MainBody.vue';
   height: 4%;
   padding: 0;
 }
-.el-header * {
+.el-header > * {
   background-color: var(--el-color-primary-light-7);
 }
 
@@ -55,7 +55,7 @@ import MainBody from '@/pages/index/components/MainBody.vue';
   height: 2%;
 }
 
-.kh-aside-menu * {
+.kh-aside-menu > * {
   height: 100%;
   background-color: var(--el-color-primary-light-8);
   color: var(--el-text-color-primary);

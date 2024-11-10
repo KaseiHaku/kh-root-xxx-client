@@ -33,16 +33,16 @@ shell> npm install json5@2.2.3                  # 安装 JSON5 解析库，需�
 shell> node ./package.json5.mjs                 # 解析 package.json5 文件中的内容，并写入到 package.json 中
 shell> node ./package.json5.mjs delete          # 删除所有 package.json
 shell> node ./package.json5.mjs -- core         # 在指定目录下操作
-shell> npm install                              # 安装依赖
+shell> npm install                              # 安装依赖，并修改 node_modules/vite-plugin-serve-static/dist/index.js#L50 为 "Content-Type": type || 'application/octet-stream'
 
-shell> npm run bpm-ppe-lib-build                # PPE 库
-shell> npm run bpm-portal-build                 # 门户
-shell> npm run bpm-app-one-build                # 应用
+shell> npm run bpm-ppe-lib-build-dev            # PPE Lib 库
+shell> npm run bpm-portal-build-dev             # 门户
+shell> npm run bpm-app-one-build-dev            # 应用
 
 shell> cp ./deploy/dev/.env.sample ./deploy/dev/.env                        # 复制并修改称自己想要的值
 shell> docker compose -f ./deploy/dev/docker-compose-nginx.yml up -d        # 启动 nginx 部署 bpm-ppe-lib
-shell> npm run bpm-portal-start                                             # 开始开发
-shell> npm run bpm-app-one-start                                            # 必须访问: http://localhost:8080/index.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
+shell> npm run bpm-portal-dev                                               # 开始开发
+shell> npm run bpm-app-one-dev                                              # 必须访问: http://localhost:8080/index.html?bpmAppName=bpm-app-one#/ , 即: 必须带 bpmAppName 参数
                                                                             # 其中 http://localhost:8080/index.html?bpmAppName=bpm-app-one#/proc/feature/v1/DefaultReport.vue
                                                                             # 会访问 http://localhost:8080/api/bpm-app-one/v1/Feature 接口，可以用于对 bpm-app-one 进行本地灰度测试
 

@@ -13,7 +13,7 @@ export default class BpmAppProfile extends CloudProfile {
   };
   static sit = {
     ...super.prod,
-    baseUrl: 'https://bpm.kaseihaku.com/api',
+    baseUrl: 'https://ddns-bpm.kaseihaku.com:50443/api',
   };
 
   static prod = {

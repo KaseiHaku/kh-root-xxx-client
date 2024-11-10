@@ -4,17 +4,13 @@
  * */
 {
   "name": "@kaseihaku.com/kh-root-xxx",
+  /**
+   * semver 规定格式的版本号
+   * */
   "version": "1.0.0",
-  // semver 规定格式的版本号
-  "description": "kaseihaku.com kh-root Client",
-  // 当前包的描述， 用于 shell> npm search
-  "keywords": [
-    "@kasei",
-    "@kaseihaku.com"
-  ],
-  // 关键字， 用于 shell> npm search
-  "private": true,
-  // 配置当前项目为 私有， 这样就不会被 shell> npm search 搜索到
+  "description": "kaseihaku.com kh-root Client", // 当前包的描述， 用于 shell> npm search
+  "keywords": ["@kasei", "@kaseihaku.com"], // 关键字， 用于 shell> npm search
+  "private": true,  // 配置当前项目为 私有， 这样就不会被 shell> npm search 搜索到
   "author": "KaseiHaku <kasei@kaseihaku.com> (https://kaseihaku.com)",
   /** 当前项目的主入口 js 文件，
    * 如果当前项目为 foo ，且其他项目 import * as foo from 'foo';
@@ -25,36 +21,36 @@
   "scripts": {
     "test": 'echo "Error: no test specified" && exit 1',
 
-    "bpm-ppe-lib-build": "NODE_ENV=production APP_PROFILE=dev webpack --config ./bpm/bpm-ppe-lib/webpack.config.babel.js",
+    "bpm-ppe-lib-build-dev": "NODE_ENV=production APP_PROFILE=dev webpack --config ./bpm/bpm-ppe-lib/webpack.config.babel.js",
     "bpm-ppe-lib-analyze": "webpack --config ./bpm/bpm-ppe-lib/webpack.config.babel.js --analyze",
 
-    "bpm-portal-build": "NODE_ENV=production APP_PROFILE=dev webpack --config ./bpm/bpm-portal/webpack.config.babel.js",
-    "bpm-portal-start": "NODE_ENV=development APP_PROFILE=dev webpack serve --config ./bpm/bpm-portal/webpack.config.babel.js",
+    "bpm-portal-dev": "NODE_ENV=development APP_PROFILE=dev vite -d --force -c ./bpm/bpm-portal/vite.config.js",
+    "bpm-portal-build-dev": "NODE_ENV=production APP_PROFILE=dev vite build -d -c ./bpm/bpm-portal/vite.config.js",
 
-    "bpm-app-one-build": "NODE_ENV=production APP_PROFILE=dev webpack --config ./bpm/bpm-app-one/webpack.config.babel.js",
-    "bpm-app-one-start": "NODE_ENV=development APP_PROFILE=dev webpack serve --config ./bpm/bpm-app-one/webpack.config.babel.js --no-cache",
+    "bpm-app-one-dev": "NODE_ENV=development APP_PROFILE=dev vite -d --force -c ./bpm/bpm-app-one/vite.config.js",
+    "bpm-app-one-build-dev": "NODE_ENV=production APP_PROFILE=dev vite build -d -c ./bpm/bpm-app-one/vite.config.js"
   },
   "dependencies": {
     "lodash-es": "4.17.21", // js 工具包，比 underscore 好，跟 lodash 包的区别是：该包导出的是 es module，而 lodash 是 node.js module
-    "libsodium-wrappers-sumo": "0.7.13", // argon2 包由于需要 Node.js 环境，且 polyfill 填充不了，所以转而使用该包
-    "uuid": "9.0.1",
+    "libsodium-wrappers-sumo": "0.7.15", // argon2 包由于需要 Node.js 环境，且 polyfill 填充不了，所以转而使用该包
+    "uuid": "11.0.2",
 
-    "axios": "1.6.8",
+    "axios": "1.7.7", // ajax 框架
 
 
-    "vue": "3.4.21",
-    "pinia": "2.1.7", // vue 消息总线，vuex 5
-    "vue-router": "4.3.0", // 用于 vue 的组件之间的跳转，因为用 vue 开发后原先的 web 那套跳转逻辑用不了了
-    "vue-i18n": "9.10.2",
-    "element-plus": "2.7.7", // 新版的 element-ui
+    "vue": "3.5.12",
+    "pinia": "2.2.4", // vue 消息总线，vuex 5
+    "vue-router": "4.4.5", // 用于 vue 的组件之间的跳转，因为用 vue 开发后原先的 web 那套跳转逻辑用不了了
+    "vue-i18n": "10.0.4",
+    "element-plus": "2.8.7", // 新版的 element-ui
     "@element-plus/icons-vue": "2.3.1", // element-plus 图标库
 
-    "@vue-office/docx": "1.6.0",    // .docx 文件预览
-    "@vue-office/excel": "1.7.3",   // .xlsx 文件预览
+    "@vue-office/docx": "1.6.2",    // .docx 文件预览
+    "@vue-office/excel": "1.7.11",   // .xlsx 文件预览
 
-    "browserify": "17.0.0", // 使仅在 nodejs 环境中可用包，在 browser 环境中也能使用
+    "browserify": "17.0.1", // 使仅在 nodejs 环境中可用包，在 browser 环境中也能使用
 
-    "ace-builds": "1.32.9", // ace-builds 是 ace 项目打包后的内容，@doc https://ace.c9.io/
+    "ace-builds": "1.36.4", // ace-builds 是 ace 项目打包后的内容，@doc https://ace.c9.io/
 
     // 自研库
     "@kaseihaku.com/core-infra": "1.0.0",
@@ -62,6 +58,7 @@
     "@kaseihaku.com/bpm-starter-basic": "1.0.0",
 
   },
+
   /* 开发依赖： 开发过程中所需要用到的工具等 */
   "devDependencies": {
     // 引入已经编译好的项目，用于部署
@@ -69,89 +66,73 @@
 
 
     /** CSS 预处理器: 就是 dart-sass 用于替换 node-sass */
-    "sass": "1.72.0",
+    "sass": "1.80.6",
+
     /** eslint */
-    "eslint": "8.57.0",
-    "@babel/eslint-parser": "7.24.1",
-    // eslint babel parser
-    "vue-eslint-parser": "9.4.2",
-    // 使 eslint 可以识别 .vue 文件的语法格式
-    "eslint-plugin-vue": "9.24.0",
-    // 将 eslint 规则应用于 .vue 文件的 <template> 标签，对 <script> 中的代码没用
-    "@stylistic/eslint-plugin-js": "1.7.0",
-    // eslint JS 核心插件
+    "eslint": "9.14.0",
+    "@babel/eslint-parser": "7.25.9", // eslint babel parser
+    "vue-eslint-parser": "9.4.3", // 使 eslint 可以识别 .vue 文件的语法格式
+    "eslint-plugin-vue": "9.30.0", // 将 eslint 规则应用于 .vue 文件的 <template> 标签，对 <script> 中的代码没用
+    "@stylistic/eslint-plugin-js": "2.10.1", // eslint JS 核心插件
 
     /** vue */
-    "@vue/cli": "5.0.8",
-    // vue 项目初始化工具，类似于 spring boot init
     "@vue/cli-plugin-babel": "5.0.8",
-    "@vue/cli-service": "5.0.8",
-    "@vue/compiler-sfc": "3.4.21",
-    // 用于编译 .vue 文件，Single File Component
+    "@vue/compiler-sfc": "3.5.12", // 用于编译 .vue 文件，Single File Component
 
 
     /** Vite */
-    "vite": "5.2.10",
-    "@vitejs/plugin-vue": "5.0.4",
-    "vite-plugin-node-polyfills": "0.21.0",
+    "vite": "5.4.10",
+    "@vitejs/plugin-vue": "5.1.4",
+    "vite-plugin-node-polyfills": "0.22.0",
     "vite-plugin-html": "3.2.2",
-    "vite-plugin-static-copy": "1.0.3",
+    "vite-plugin-static-copy": "2.0.0",
+    "vite-plugin-serve-static": "1.0.3", // 使用前需要先修改 node_modules/vite-plugin-serve-static/dist/index.js#L50 为 "Content-Type": type || 'application/octet-stream'
+
     /** webpack */
-    "webpack": "5.91.0",
+    "webpack": "5.96.1",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.0.4",
-    "webpack-merge": "5.10.0",
-    "@types/webpack-env": "1.18.4",
+    "webpack-dev-server": "5.1.0",
+    "webpack-merge": "6.0.1",
+    "@types/webpack-env": "1.18.5",
     "webpack-node-externals": "3.0.0",
     // webpack plugin
-    "html-webpack-plugin": "5.6.0",
-    "node-polyfill-webpack-plugin": "3.0.0",
-    // Node.js Core Module Browser polyfills
-    "eslint-webpack-plugin": "4.1.0",
-    // 使 webpack 装配时，自动检测文件中的 eslint 规则
+    "html-webpack-plugin": "5.6.3",
+    "node-polyfill-webpack-plugin": "4.0.0",  // Node.js Core Module Browser polyfills
+    "eslint-webpack-plugin": "4.2.0", // 使 webpack 装配时，自动检测文件中的 eslint 规则
     "copy-webpack-plugin": "12.0.2",
-    "webpack-manifest-plugin": "5.0.0",
-    // 生成 webpack manifest
-    "post-compile-webpack-plugin": "0.1.2",
-    // webpack 执行完成后的回调
-    "mini-css-extract-plugin": "2.9.0",
-    // 提取 css 到独立的 .css 文件中
+    "webpack-manifest-plugin": "5.0.0", // 生成 webpack manifest
+    "post-compile-webpack-plugin": "0.1.2", // webpack 执行完成后的回调
+    "mini-css-extract-plugin": "2.9.2", // 提取 css 到独立的 .css 文件中
     // webpack loader
-    "html-loader": "5.0.0",
-    "babel-loader": "9.1.3",
-    "vue-loader": "17.4.2",
-    // 用于加载 .vue 文件，Single File Component
-    "sass-loader": "14.1.1",
-    // css
-    "css-loader": "6.10.0",
-    // css
-    "style-loader": "3.3.4",
-    // css
+    "html-loader": "5.1.0",
+    "babel-loader": "9.2.1",
+    "vue-loader": "17.4.2",   // 用于加载 .vue 文件，Single File Component
+    "sass-loader": "16.0.3",  // css
+    "css-loader": "7.1.2",    // css
+    "style-loader": "4.0.0",  // css
     "resolve-url-loader": "5.0.0",
+
+
     /** babel */
-    "@babel/core": "7.24.3",
-    // babel 核心包,
-    "@babel/preset-env": "7.24.3",
-    // 由于上述的 plugin-transform-xxx 太多，所以根据常用的插件进行了打包，这个就是特定环境的插件包
-    "@babel/runtime": "7.24.1",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    // 引入 @babel/runtime 提取出来的 helper 函数，需要添加到 .babelrc Plugins 里面去
-    "@babel/register": "7.23.7",
-    // 实际上为require加了一个钩子（hook），之后所有被 node 引用的 .es6、.es、.jsx 以及 .js 文件都会先被 Babel 转码。
+    "@babel/core": "7.26.0", // babel 核心包,
+    "@babel/preset-env": "7.26.0", // 由于上述的 plugin-transform-xxx 太多，所以根据常用的插件进行了打包，这个就是特定环境的插件包
+    "@babel/runtime": "7.26.0",
+    "@babel/plugin-transform-runtime": "7.25.9", // 引入 @babel/runtime 提取出来的 helper 函数，需要添加到 .babelrc Plugins 里面去
+    "@babel/register": "7.25.9",// 实际上为require加了一个钩子（hook），之后所有被 node 引用的 .es6、.es、.jsx 以及 .js 文件都会先被 Babel 转码。
 
     /* JSON5 */
-    "json5": "2.2.3",
-    // 主要用于把 package.json5 转成 package.json
+    "json5": "2.2.3", // 主要用于把 package.json5 转成 package.json
   },
+
   /* 指定当前项目使用的 node 和 npm 版本 */
   "engines": {
-    "node": "20.14.0",
-    // LTS
-    "npm": "10.7.0",
+    "node": "20.18.0",   // LTS
+    "npm": "10.8.2",
   },
+
   /* 指定特定的目录为一个 子 module，并建立一个 symlink 到 node_modules 下 */
   "workspaces": [
-    /* 这种配置，所有 ./core/core-com 下的子目录都会被当作一个 workspace，只要 子目录中存在 package.json 文件 */
+    /* 这种配置，所有 ./xxx-starter/xxx-starter-basic 下的子目录都会被当作一个 workspace，只要 子目录中存在 package.json 文件 */
     "./xxx-starter/xxx-starter-basic"
   ]
 }

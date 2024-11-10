@@ -74,6 +74,10 @@ const keepAliveInclude = computed(() => currentElTabPanes.value.map(item => item
 <style lang="scss" scoped>
   .el-tabs {
     height: 5%;
+
+    :deep(> .el-tabs__content) {
+      padding: 0 ;
+    }
   }
 
   .kh-router-view {

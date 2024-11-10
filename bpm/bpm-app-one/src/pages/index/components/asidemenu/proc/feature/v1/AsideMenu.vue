@@ -33,4 +33,5 @@ const menuItems = [
     height: 100%;
     overflow: auto;
   }
+
 </style>

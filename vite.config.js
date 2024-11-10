@@ -1,11 +1,12 @@
 import path from 'path';
-import {fileURLToPath} from 'url';
+import {fileURLToPath, pathToFileURL, URL} from 'url';
 
 import {defineConfig, loadEnv, createLogger} from 'vite';
 import pluginVue from '@vitejs/plugin-vue';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import viteServeStatic from 'vite-plugin-serve-static';
 
 /**
  * 坑：
@@ -47,20 +48,68 @@ const serverOptions = {
   proxy: {
     '/login': 'http://192.168.0.106:8910',
     '/oauth2-login': 'http://192.168.0.106:8910',
-    '/logout': 'http://192.168.0.106:8910',
+    '/logout': {
+      target: 'http://192.168.0.106:8910',
+      changeOrigin: false,
+    },
+    '/oauth2': {
+      target: 'http://192.168.0.106:8910',
+      secure: false,
+      toProxy: true,
+    },
+    '/consul': {
+      target: 'http://192.168.0.201:8500',
+      secure: false,
+      rewrite: (path) => path.replace(/^\/consul/, ''),
+    },
+    /**
+     * @ref {Options 文档} https://github.com/vitejs/vite/blob/main/packages/vite/src/node/server/middlewares/proxy.ts
+     * @ref {Options 文档} https://github.com/vitejs/vite/blob/main/packages/vite/src/types/http-proxy.d.ts
+     * */
     '^/api': {
       target: 'http://localhost:8999',
-      changeOrigin: false,
       rewrite: (path) => path.replace(/^\/api/, ''),
+      secure: false,   // 当后端地址是 https 但是证书是无效的时，必须配置为 false ，否则无法访问
+      toProxy: true,            // true: 将全部的 URL 作为 path（用于代理到代理服务器）
+      prependPath: true,        // true: 将 /api/* 拼接到 target 后面
+      ignorePath: false,        // true: 将 /api/* 都忽略掉, @trap target 地址需要自行处理
+      // localAddress: '',         // 向外发起请求时，使用本地哪张网卡
+      /* @trap 巨神坑：这里 false 的话，会以原始请求 URL 发送给 目标服务器，
+       *    即：http://localhost/bpm-ppe-lib/native/proc_brand1/v1/Node1Brand.vue
+       *    但是目标端口会从 $.devServer.port(8080) 变成 target 中的 目标端口(80)
+       *    坑中带坑
+       * */
+      changeOrigin: false,     // true: 修改 Origin http header 用于防止跨域问题
+      preserveHeaderKeyCase: false,     // false: 不保留响应头大小写格式
+      // auth: 'user:password',    // 使用指定 账号/密码 登录目标服务器
+      // hostRewrite: ,     // 重定向时，重写 hostname
+      autoRewrite: false,  // 重定向时，重写 host/port
+      // protocolRewrite: 'https', // 重定向时，将 protocol 重写为 "http" 或 "https"，默认为 null
+      // 添加额外的请求头，再发送给目标服务器
+      headers: {
+        // 'x-kasei-gray-req-flag': 'Canary=bpm-app-one,bpm-app-xxx',    // browser 灰度请求定义 header
+      },
+      followRedirects: false,  // false: agent 自动跟踪 redirect 响应
     },
-    '/bpm-ppe-lib': {
-      target: 'https://bpm.kaseihaku.com',
-      changeOrigin: false,
-    },
+    // '/bpm-ppe-lib': {
+    //   target: 'https://bpm.kaseihaku.com',
+    //   secure: false,
+    //   toProxy: true,
+    //   /* @trap 巨神坑：这里 false 的话，会以原始请求 URL 发送给 目标服务器，
+    //    *    即：http://localhost/bpm-ppe-lib/native/proc_brand1/v1/Node1Brand.vue
+    //    *    但是目标端口会从 $.devServer.port(8080) 变成 target 中的 目标端口(80)
+    //    *    坑中带坑
+    //    * */
+    //   changeOrigin: true,
+    //   followRedirects: false,
+    // },
   },
   cors: true,
   headers: {
     'x-kh-server': 'vite dev server',
+  },
+  fs: {
+    strict: true,
   },
   sourcemapIgnoreList(sourcePath, sourcemapPath) {
     return sourcePath.includes('node_modules');
@@ -85,7 +134,8 @@ const buildOptions = {
   },
   /* true: css 代码整合到 js chunk 中，随着 js chunk 的加载而加载 */
   // cssCodeSplit: true, // 当指定 lib 属性时，该值默认为 false
-  sourcemap: true,
+  // sourcemap: process.env.APP_PROFILE && process.env.APP_PROFILE!=='prod', // prod 环境不生成 source-map, 其他环境都生成，方便 debug,
+  sourcemap: false,
   // rollupOptions: {},
   // lib: {},
   minify: true,
@@ -121,14 +171,45 @@ export async function genBasicViteConfig({command, mode, isSsrBuild, isPreview})
    * */
   return {
     root: path.resolve(__dirnameEsModule, getPkgPath()),
-    base: '/',
+    /* 指定 assets 相关的文件，在 browser 地址栏中是如何访问的，例如：
+     *  'https://cdn.com/assets/'     # 表示 assets 的访问路径是 https://cdn.com/assets/xxx.jpg
+     *  '/assets/'                    # 表示 assets 的访问路径是 /assets/xxx.jpg    域名同当前页面
+     *  ''                            # 表示 assets 的访问路径是 相对于当前 .html 页面路径的 (same directory)
+     *  './'                          # ditto(同上)
+     * */
+    base: './',
     mode: mode,
     define: {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
+      // 源代码中的 process.env.NODE_ENV 替换为 NODE_ENV 环境变量的值
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('production'), // 要和 $.mode 中的配置保持一致
+      'process.env.APP_PROFILE': JSON.stringify(process.env.APP_PROFILE) || JSON.stringify('sit'),  // ditto
     },
     plugins: [
       nodePolyfills(),
       pluginVue(),
+      /**
+       * @trap 使用该方式需要先修改 node_modules/vite-plugin-serve-static/dist/index.js#L50
+       *       "Content-Type": type || void 0
+       *       修改为
+       *       "Content-Type": type || 'application/octet-stream'
+       * */
+      {
+        apply: 'serve',   // server: 表示只在 shell> vite serve 时应用该插件
+        ...viteServeStatic([
+          {
+            pattern: /^\/bpm-ppe-lib\/.*/,
+            resolve: ([match]) => {
+              const pathname = URL.parse(match, 'file://').pathname;
+              return path.resolve(__dirnameEsModule, 'bpm/bpm-ppe-lib/dist', pathname.substring('/bpm-ppe-lib/'.length));
+            }
+          },
+          // {
+          //   pattern: /^\/bpm-ppe\/(.*)/,
+          //   resolve: (groups) => path.resolve(__dirnameEsModule, 'bpm/bpm-ppe/dist', groups[1]),
+          // },
+        ]),
+      },
     ],
     publicDir: 'public', // 直接将该目录下的文件原样 copy 到 build.outDir 目录下
     cacheDir: 'node_modules/.vite',
@@ -136,10 +217,11 @@ export async function genBasicViteConfig({command, mode, isSsrBuild, isPreview})
       alias: [
         {
           find: '@',
+          // replacement: '/src', // 该文件中以 / 开头的路径，代表的是当前文件(vite.config.js)所在目录，跟 submodule 中的 vite.config.js 没有任何关系
           replacement: path.resolve(__dirnameEsModule, getPkgPath(), 'src'),
         },
         {
-          find: /(.*)\?resource/i,
+          find: /^(.*)\?resource/i,
           replacement: '$1?url',
         },
       ],
@@ -164,11 +246,31 @@ export async function genBasicViteConfig({command, mode, isSsrBuild, isPreview})
     esbuild: {
       // include: [],  // 如果没有，禁止添加，会导致 esbuild 报错
     },
-    /* 将符合 picomatch patterns 的文件作为 静态资源 对待
-     * @doc {picomatch patterns} https://github.com/micromatch/picomatch#globbing-features
+    /*
+     * 该属性用于将符合 picomatch patterns 的文件作为 静态资源 对待
+     * @doc { picomatch patterns } https://github.com/micromatch/picomatch#globbing-features
+     * @ref { vite assets import } https://vite.dev/guide/assets.html
+     *
+     * Vite 中 Assets 导入方式:
+     *  以 URL 形式导入（包括 CSS 中使用 url() 形式导入），同 webpack file-loader
+     *    import url from './path/to/img.png';
+     *    import url from '/path/to/worklet.js?url';                    # 如果 import string 在 assetsInclude 中没有包含，可以使用 ?url 来明确的表示导入为 URL
+     *    import dataUrl from './shader.glsl?raw';                      # ?raw 表示使用 Data URL 形式导入
+     *    import worker from './shader.js?worker';                      # ?worker 表示导入为 Web Worker
+     *    import sharedWorker from './shader.js?sharedworker';          # ?worker 表示导入为 Web Worker
+     *    import inlineWorker from './shader.js?worker&inline';         # ?worker&inline 表示以 base64 形式导入为 Web Worker
+     *
+     *  Public Directory
+     *    默认为 当前文件所在目录下的 public 目录，可以使用 publicDir 属性修改
+     *
+     *  基于当前 JS Module 来导入 Asset
+     *    const imgUrl = new URL('./img.png', import.meta.url).href;
+     *    @trap 第一个参数必须是以 静态路径开头的字符串，不能完全是变量，如果仅仅是变量，那么 vite 会原样保留
+     *    @trap SSR 下不能使用
+     *
      * */
     assetsInclude: [
-      '**/*?resource'
+      '**/*\?resource'
     ],
     logLevel: 'info',
     clearScreen: true,
@@ -183,6 +285,10 @@ export async function genBasicViteConfig({command, mode, isSsrBuild, isPreview})
     build: buildOptions,
     preview: {},
     optimizeDeps: optimizationOptions,
+    /** Web Worker 配置 */
+    worker: {
+      format: 'es', // 可选值: [iife, es]
+    }
   };
 }
 
@@ -255,7 +361,7 @@ export async function genMpaBasicConfig(configEnv) {
   ];
 
 
-  basicConfig.build.target = [...basicConfig.build.target, 'firefox100', 'chrome100'];
+  basicConfig.build.target = [...basicConfig.build.target, 'chrome120', 'firefox120'];
   basicConfig.build.rollupOptions = {
     input: {
       'index': path.resolve(__dirnameEsModule, getPkgPath(), 'index.html') ,

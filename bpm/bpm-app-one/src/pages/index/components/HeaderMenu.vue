@@ -1,7 +1,7 @@
 <template>
   <el-menu :default-active="'/'" class="el-menu-demo" mode="horizontal" :ellipsis="false" :router="true">
     <el-menu-item index="/">
-      <img src="@/assets/images/logo.png" alt="LOGO">
+      <img :src="logoUrl" alt="LOGO">
     </el-menu-item>
     <div class="flex-grow" />
     <el-sub-menu :index="uuidV4()">
@@ -43,6 +43,7 @@ import { v4 as uuidV4 } from 'uuid';
 import {getJwsPayload} from '@kaseihaku.com/core-infra';
 import {logout, getJwsToken, CloudImConst, useCurUserStore} from '@kaseihaku.com/cloud-starter-basic';
 import Profile from '@/constant/BpmAppProfile.js';
+import logoUrl from '@/assets/images/logo.svg';
 
 /******************************* Config *******************************/
 const curUserStore = useCurUserStore();
@@ -88,6 +89,7 @@ onBeforeMount(() => {
   }
 
   img {
+    min-width: 32px;
     max-width: 100%;
     max-height: 90%;
   }
