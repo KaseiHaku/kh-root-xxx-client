@@ -86,7 +86,7 @@
     "vite-plugin-node-polyfills": "0.22.0",
     "vite-plugin-html": "3.2.2",
     "vite-plugin-static-copy": "2.0.0",
-    "vite-plugin-serve-static": "1.0.3", // 使用前需要先修改 node_modules/vite-plugin-serve-static/dist/index.js#L50 为 "Content-Type": type || 'application/octet-stream'
+    "vite-plugin-serve-static": "1.0.4",
 
     /** webpack */
     "webpack": "5.96.1",
