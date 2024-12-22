@@ -16,6 +16,6 @@ deploy/dev/pvt/
 /**/package-lock.json
 
 # Node.js Webpack 的输出目录
-/**/node_modules/
+/**/node_modules
 /**/dist*/
 
