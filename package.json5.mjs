@@ -6,14 +6,6 @@ import fs from 'fs';
 import path from 'path';
 import json5 from 'json5';
 
-/**
- * 打印命令行参
- * 常用命令:
- *  shell> node ./package.json5.mjs                       # 解析 package.json5 文件中的内容，并写入到 package.json 中
- *  shell> node ./package.json5.mjs -- --op=delete        # 删除所有 package.json
- *  shell> node ./package.json5.mjs -- --wd=core          # 在 core 目录下执行
- * */
-console.log('process.argv: ', process.argv);
 
 /**
  * @typedef {Object} Miku
@@ -89,7 +81,12 @@ async function recursiveDelete(initPath, deep, initial=true){
 
 /**
  * 命令行参数解析
+ * 常用命令:
+ *  shell> node ./package.json5.mjs                       # 解析 package.json5 文件中的内容，并写入到 package.json 中
+ *  shell> node ./package.json5.mjs -- --op=delete        # 删除所有 package.json
+ *  shell> node ./package.json5.mjs -- --wd=core          # 在 core 目录下执行
  * */
+console.log('process.argv: ', process.argv);  // 打印命令行参数
 const dashDashSeparatorIdx = process.argv.findIndex(item => item === '--');
 let operator = 'transform';
 let initPath = '.';
