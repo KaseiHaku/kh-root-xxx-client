@@ -7,6 +7,15 @@ import path from 'path';
 import json5 from 'json5';
 
 /**
+ * 打印命令行参
+ * 常用命令:
+ *  shell> node ./package.json5.mjs                       # 解析 package.json5 文件中的内容，并写入到 package.json 中
+ *  shell> node ./package.json5.mjs -- --op=delete        # 删除所有 package.json
+ *  shell> node ./package.json5.mjs -- --wd=core          # 在 core 目录下执行
+ * */
+console.log('process.argv: ', process.argv);
+
+/**
  * @typedef {Object} Miku
  * @property {string} master - Miku 的属性
  *
@@ -26,7 +35,7 @@ function transferJson5ToJson(packageJson5Path){
  * @param {path} initPath 初始递归路径
  * @param {number} deep 递归深度 0 表示只递归当前目录，1 表示递归当前目录及其直接子目录，以此类推
  */
-async function recursiveTransfer(initPath, deep){
+async function recursiveTransform(initPath, deep){
   if(deep < 0) { return ; }
 
   let dirents = await fs.promises.readdir(initPath, {encoding:'utf8', withFileTypes: true});
@@ -35,7 +44,7 @@ async function recursiveTransfer(initPath, deep){
   for (const dirent of dirents){
     let path1 = path.join(initPath, dirent.name);
     if (dirent.isDirectory() && dirent.name!=='node_modules'){
-      recursiveTransfer(path1, deep-1);
+      recursiveTransform(path1, deep-1);
     }
 
     if (dirent.isFile() && dirent.name === 'package.json5') {
@@ -78,18 +87,40 @@ async function recursiveDelete(initPath, deep, initial=true){
 }
 
 
+/**
+ * 命令行参数解析
+ * */
+const dashDashSeparatorIdx = process.argv.findIndex(item => item === '--');
+let operator = 'transform';
 let initPath = '.';
-let dashDashSeparatorIdx = process.argv.findIndex(item => item === '--');
-if ( dashDashSeparatorIdx > 0 && process.argv[dashDashSeparatorIdx + 1]) {
-  initPath = process.argv[dashDashSeparatorIdx + 1];
+if(dashDashSeparatorIdx > 0 ){
+  const args = process.argv.slice(dashDashSeparatorIdx +1);
+  for (const item of args) {
+    if(item.startsWith('--op=')){
+      operator = item.substring('--op='.length);
+    }
+    if(item.startsWith('--wd=')){
+      initPath = item.substring('--wd='.length);
+    }
+  }
+
 }
 
 
-if(process.argv.includes('delete')){
-  recursiveDelete(initPath, 4);
-} else {
-  recursiveTransfer(initPath, 4);
+switch (operator) {
+  case 'transform': {
+    recursiveTransform(initPath, 4);
+    break ;
+  }
+  case 'del':
+  case 'rm':
+  case 'delete': {
+    recursiveDelete(initPath, 4);
+    break ;
+  }
+  default: {
+    throw new Error('unknown operator type');
+  }
 }
-
 
 

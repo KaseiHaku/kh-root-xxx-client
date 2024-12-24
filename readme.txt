@@ -31,8 +31,8 @@ shell> nvm use 20.14.0                          # 使用指定版本的 node
 
 shell> npm install json5@2.2.3                  # 安装 JSON5 解析库，需要先删掉顶层 package.json, 否则会额外下载 package.json 中的依赖
 shell> node ./package.json5.mjs                 # 解析 package.json5 文件中的内容，并写入到 package.json 中
-shell> node ./package.json5.mjs delete          # 删除所有 package.json
-shell> node ./package.json5.mjs -- core         # 在指定目录下操作
+shell> node ./package.json5.mjs -- --op=delete  # 删除所有 package.json
+shell> node ./package.json5.mjs -- --wd=core    # 在指定目录下操作
 shell> npm install                              # 安装依赖
 
 shell> npm run bpm-ppe-lib-build-dev            # PPE Lib 库
