@@ -1,4 +1,3 @@
-/** import */
 import { ref, computed } from 'vue';
 import { createPinia, defineStore } from 'pinia';
 
@@ -26,14 +25,17 @@ export const useAlertsStore = defineStore(storeNames.aaa, {
   // 该字段可以理解为当前 store 的 data
   state: () => ({ count: 0, name: 'Eduardo' }),
 
-  // 该字段可以理解为 state 的 computed 属性
+  // 该字段可以理解为 state 的 computed 属性; @trap 只能为 sync 方法
   getters: {
-    doubleCount: (state) => state.count * 2,
+    doubleCount: (state) => {
+      // return this.count * 2; // 访问 state 中的字段
+      return state.count * 2; // 同上，只是推荐这种方法
+    },
   },
 
-  // 该字段可以理解为 methods
+  // 该字段可以理解为 methods，可以为 async 方法
   actions: {
-    increment() {
+    async increment() {
       this.count++;
     },
   },
@@ -49,10 +51,10 @@ export const useCounterStore = defineStore('counter', () => {
   const count = ref(0);
   const name = ref('Eduardo');
 
-  // 相当于 Options API 中的 getters
+  // 相当于 Options API 中的 getters; @trap 只能为 sync 方法
   const doubleCount = computed(() => count.value * 2);
 
-  // 相当于 Options API 中的 actions
+  // 相当于 Options API 中的 actions，可以为 async 方法
   function increment() {
     count.value++;
   }

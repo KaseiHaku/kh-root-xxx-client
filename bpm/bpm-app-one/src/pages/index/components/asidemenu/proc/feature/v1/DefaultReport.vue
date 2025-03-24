@@ -28,7 +28,7 @@
     <el-pagination v-model:page-size="paginationModel.pageSize" v-model:current-page="paginationModel.pageNum" size="small"
                    layout="prev, next, jumper, ->"
                    :pager-count="paginationModel.pagerCount" :page-sizes="paginationModel.pageSizes" :default-current-page="1"
-                   :total="paginationModel.total" />
+                   :total="Number(paginationModel.total)" />
   </div>
 </template>
 

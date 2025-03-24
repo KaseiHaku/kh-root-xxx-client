@@ -1,0 +1,19 @@
+/**
+ * @doc { vscode jsconfig.json 文档} https://vscode.js.cn/docs/languages/jsconfig
+ * */
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ES2022",
+    "moduleResolution": "Node16",
+    "checkJs": true,
+    "experimentalDecorators": false,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

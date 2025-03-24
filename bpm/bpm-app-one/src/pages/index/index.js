@@ -53,4 +53,7 @@ app.config.errorHandler = (err, vm, info) => {
 app.mount('#app');  // 将 dataModel 挂载到指定 dom 节点上
 
 
-
+/**
+ * 为了防止 pinia store 在使用时，pinia 还没有初始化的问题，所以直接在最开始就加载用到 pinia store 的 js 文件
+ * */
+// import ('@/config/axios/ServerApi.js');
