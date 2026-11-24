@@ -30,7 +30,7 @@ export default {
     return {};
   },
   mode: process.env.NODE_ENV || 'production',
-  target: ['es2021'],
+  target: ['es2022'],
   output: {
     path: path.resolve(__dirnameEsModule, 'dist'), // 产物保存路径
     clean: true, // 打包前先清理输出目录
@@ -74,15 +74,19 @@ export default {
             cache: false,
             transformer: (content, absoluteFilename) => {
 
+              const pathx = path.posix; // 使用 posix 形式的 path 对象
+
               // 将不管 windows 还是 linux 的路径，全转成 linux 格式的
-              let src = path.posix.format(path.parse(path.resolve(__dirnameEsModule, 'src')));
-              let posixAbsoluteFilename = path.posix.format(path.parse(absoluteFilename));
+              const __dirnameEsModule_x = __dirnameEsModule.replace(/\\/g, '/');
+              const absoluteFilename_x = absoluteFilename.replace(/\\/g, '/');
+              let src = pathx.format(pathx.parse(pathx.resolve(__dirnameEsModule_x, 'src')));
+              let posixAbsoluteFilename = pathx.format(pathx.parse(absoluteFilename_x));
 
 
-              let dirname = path.posix.dirname(absoluteFilename);
+              let dirname = path.posix.dirname(absoluteFilename_x);
               if(dirname === src){
                 // 如果当前文件所在的目录就是 src 目录，那么直接替换返回
-                console.log(`@/ in file ${absoluteFilename} will replace to ./`);
+                console.log(`@/ in file ${absoluteFilename_x} will replace to ./`);
                 return content.toString().replaceAll('@/', `./`);
               }
 
@@ -103,7 +107,7 @@ export default {
                 let absoluteImport4 = path.posix.resolve(dirname, relativeImport);
 
                 let ultimateImport = path.posix.relative(dirname, absoluteImport4);
-                if(!ultimateImport.startsWith('.')){
+                if(!ultimateImport.startsWith('.') || /^[A-Za-z]:/.test(ultimateImport)){
                   ultimateImport = './' + ultimateImport;
                 }
 
